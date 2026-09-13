@@ -1,9 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { TOOLS } from './data/tools.js'
 import { DEFAULT_TERM_ID } from './data/rentTerms.js'
 import {
   priceBounds,
-  emptyState,
   selectTools,
   optionCounts,
   conflictHints,
@@ -15,12 +14,40 @@ import ToolGrid from './components/ToolGrid.jsx'
 import TermSwitch from './components/TermSwitch.jsx'
 import SortSelect from './components/SortSelect.jsx'
 import ToolDialog from './components/ToolDialog.jsx'
+import { stateToSearch, searchToState } from './lib/urlState.js'
 
 export default function App() {
   const bounds = useMemo(() => priceBounds(TOOLS), [])
-  const [state, setState] = useState(() => emptyState(bounds))
-  const [term, setTerm] = useState(DEFAULT_TERM_ID)
+  const [initial] = useState(() => searchToState(window.location.search, bounds))
+  const [state, setState] = useState(initial.state)
+  const [term, setTerm] = useState(initial.term)
   const [openTool, setOpenTool] = useState(null)
+  const historyTimer = useRef(null)
+
+  useEffect(() => {
+    const search = stateToSearch(state, term, bounds)
+    const next = search ? `${window.location.pathname}?${search}` : window.location.pathname
+    const current = `${window.location.pathname}${window.location.search}`
+    if (next === current) return
+
+    // Задержка, чтобы протаскивание ползунка не плодило шаги истории.
+    clearTimeout(historyTimer.current)
+    historyTimer.current = setTimeout(() => {
+      window.history.pushState(null, '', next)
+    }, 400)
+
+    return () => clearTimeout(historyTimer.current)
+  }, [state, term, bounds])
+
+  useEffect(() => {
+    const onPop = () => {
+      const restored = searchToState(window.location.search, bounds)
+      setState(restored.state)
+      setTerm(restored.term)
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
+  }, [bounds])
 
   const shown = useMemo(() => selectTools(TOOLS, state), [state])
   const counts = useMemo(() => optionCounts(TOOLS, state), [state])
