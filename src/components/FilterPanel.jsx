@@ -1,6 +1,7 @@
 import { GROUPS, toggleOption, activeFilterCount, resetFilters } from '../lib/filter.js'
 import CheckboxGroup from './CheckboxGroup.jsx'
 import DeliveryToggle from './DeliveryToggle.jsx'
+import PriceRange from './PriceRange.jsx'
 
 export default function FilterPanel({ state, counts, bounds, onChange }) {
   const active = activeFilterCount(state, bounds)
@@ -29,6 +30,12 @@ export default function FilterPanel({ state, counts, bounds, onChange }) {
           onToggle={(optionId) => onChange(toggleOption(state, group.key, optionId))}
         />
       ))}
+
+      <PriceRange
+        value={state.price}
+        bounds={bounds}
+        onChange={(price) => onChange({ ...state, price })}
+      />
 
       <div className="border-b border-line pb-5">
         <DeliveryToggle
