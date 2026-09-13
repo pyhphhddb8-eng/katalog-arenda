@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Каталог с подбором">
+  <rect width="32" height="32" rx="7" fill="#a34a08"/>
+  <g stroke="#fff" stroke-width="2.6" stroke-linecap="round">
+    <path d="M7 12h18"/>
+    <path d="M7 20h18"/>
+  </g>
+  <circle cx="12" cy="12" r="4" fill="#fff"/>
+  <circle cx="21" cy="20" r="4" fill="#fff"/>
+  <circle cx="12" cy="12" r="1.7" fill="#a34a08"/>
+  <circle cx="21" cy="20" r="1.7" fill="#a34a08"/>
+</svg>
