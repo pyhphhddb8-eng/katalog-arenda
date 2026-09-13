@@ -83,3 +83,67 @@ export function toggleOption(state, groupKey, optionId) {
     : [...current, optionId]
   return { ...state, [groupKey]: next }
 }
+
+export function optionCount(tools, state, groupKey, optionId) {
+  // Своя группа считается так, будто в ней отмечена только эта опция.
+  // Соседние группы, цена и доставка остаются как есть.
+  const probe = { ...state, [groupKey]: [optionId] }
+  return tools.filter((tool) => matchesTool(tool, probe)).length
+}
+
+export function optionCounts(tools, state) {
+  const counts = {}
+  for (const group of GROUPS) {
+    counts[group.key] = {}
+    for (const option of group.options) {
+      counts[group.key][option.id] = optionCount(tools, state, group.key, option.id)
+    }
+  }
+  return counts
+}
+
+function isPriceNarrowed(state, bounds) {
+  return state.price[0] > bounds.min || state.price[1] < bounds.max
+}
+
+export function activeFilterCount(state, bounds) {
+  let count = 0
+  for (const group of GROUPS) count += (state[group.key] ?? []).length
+  if (isPriceNarrowed(state, bounds)) count += 1
+  if (state.deliveryOnly) count += 1
+  return count
+}
+
+export function resetFilters(state, bounds) {
+  return { ...emptyState(bounds), sort: state.sort }
+}
+
+export function conflictHints(tools, state, bounds) {
+  if (selectTools(tools, state).length > 0) return []
+
+  const candidates = [
+    ...GROUPS.map((g) => ({
+      key: g.key,
+      label: g.label,
+      relaxed: { ...state, [g.key]: [] },
+      active: (state[g.key] ?? []).length > 0,
+    })),
+    {
+      key: 'price',
+      label: 'Цена за сутки',
+      relaxed: { ...state, price: [bounds.min, bounds.max] },
+      active: isPriceNarrowed(state, bounds),
+    },
+    {
+      key: 'deliveryOnly',
+      label: 'Только с доставкой',
+      relaxed: { ...state, deliveryOnly: false },
+      active: state.deliveryOnly,
+    },
+  ]
+
+  // Показываем только те условия, снятие которых в одиночку вернёт результат.
+  return candidates
+    .filter((c) => c.active && selectTools(tools, c.relaxed).length > 0)
+    .map(({ key, label }) => ({ key, label }))
+}

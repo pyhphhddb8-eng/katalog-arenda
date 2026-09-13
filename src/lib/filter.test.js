@@ -167,3 +167,151 @@ describe('GROUPS', () => {
     expect(GROUPS.map((g) => g.key)).toEqual(['types', 'powers', 'weights'])
   })
 })
+
+import {
+  optionCount,
+  optionCounts,
+  activeFilterCount,
+  resetFilters,
+  conflictHints,
+} from './filter.js'
+import { TOOLS } from '../data/tools.js'
+
+describe('optionCount', () => {
+  it('на пустом отборе показывает, сколько позиций даст отметка', () => {
+    expect(optionCount(fixtures, base, 'types', 'compaction')).toBe(2)
+  })
+
+  it('не оглядывается на другие отметки своей же группы', () => {
+    const state = { ...base, types: ['concrete'] }
+    expect(optionCount(fixtures, state, 'types', 'compaction')).toBe(2)
+  })
+
+  it('учитывает отметки соседних групп', () => {
+    const state = { ...base, powers: ['petrol'] }
+    expect(optionCount(fixtures, state, 'types', 'compaction')).toBe(1)
+  })
+
+  it('учитывает диапазон цены', () => {
+    const state = { ...base, price: [900, 2500] }
+    expect(optionCount(fixtures, state, 'types', 'compaction')).toBe(2)
+  })
+
+  it('учитывает доставку', () => {
+    const state = { ...base, deliveryOnly: true }
+    expect(optionCount(fixtures, state, 'types', 'compaction')).toBe(1)
+  })
+
+  it('показывает ноль там, где жать бессмысленно', () => {
+    const state = { ...base, powers: ['mains'] }
+    expect(optionCount(fixtures, state, 'types', 'height')).toBe(0)
+  })
+
+  it('для уже отмеченной опции показывает её вклад в текущий список', () => {
+    const state = { ...base, types: ['concrete', 'compaction'] }
+    expect(optionCount(fixtures, state, 'types', 'compaction')).toBe(2)
+  })
+})
+
+describe('счётчик сходится с тем, что покажет список', () => {
+  const realBounds = priceBounds(TOOLS)
+  const states = [
+    emptyState(realBounds),
+    { ...emptyState(realBounds), types: ['compaction'] },
+    { ...emptyState(realBounds), powers: ['petrol'], weights: ['light'] },
+    { ...emptyState(realBounds), types: ['hand', 'concrete'], deliveryOnly: true },
+    { ...emptyState(realBounds), price: [700, 2000] },
+  ]
+
+  it('для каждой неотмеченной опции в каждом состоянии', () => {
+    for (const state of states) {
+      const shown = selectTools(TOOLS, state).length
+      for (const group of GROUPS) {
+        const selected = state[group.key]
+        for (const option of group.options) {
+          if (selected.includes(option.id)) continue
+          const count = optionCount(TOOLS, state, group.key, option.id)
+          const after = selectTools(TOOLS, toggleOption(state, group.key, option.id)).length
+          if (selected.length === 0) {
+            // Группа пуста: счётчик — это и есть будущая длина списка.
+            expect(count).toBe(after)
+          } else {
+            // В группе уже есть отметки: счётчик — это прибавка.
+            expect(shown + count).toBe(after)
+          }
+        }
+      }
+    }
+  })
+})
+
+describe('optionCounts', () => {
+  it('выдаёт число для каждой опции каждой группы', () => {
+    const counts = optionCounts(fixtures, base)
+    expect(Object.keys(counts)).toEqual(['types', 'powers', 'weights'])
+    expect(counts.types.compaction).toBe(2)
+    expect(counts.weights.heavy).toBe(1)
+    expect(counts.powers.battery).toBe(0)
+  })
+})
+
+describe('activeFilterCount', () => {
+  it('на пустом состоянии равен нулю', () => {
+    expect(activeFilterCount(base, bounds)).toBe(0)
+  })
+
+  it('считает каждую отметку отдельно', () => {
+    const state = { ...base, types: ['compaction', 'height'], powers: ['petrol'] }
+    expect(activeFilterCount(state, bounds)).toBe(3)
+  })
+
+  it('считает суженный диапазон цены за одно условие', () => {
+    const state = { ...base, price: [800, 3000] }
+    expect(activeFilterCount(state, bounds)).toBe(1)
+  })
+
+  it('считает доставку за одно условие', () => {
+    expect(activeFilterCount({ ...base, deliveryOnly: true }, bounds)).toBe(1)
+  })
+
+  it('не считает сортировку фильтром', () => {
+    expect(activeFilterCount({ ...base, sort: 'price-desc' }, bounds)).toBe(0)
+  })
+})
+
+describe('resetFilters', () => {
+  it('снимает все условия', () => {
+    const state = { ...base, types: ['compaction'], deliveryOnly: true, price: [800, 900] }
+    expect(activeFilterCount(resetFilters(state, bounds), bounds)).toBe(0)
+  })
+
+  it('оставляет выбранную сортировку', () => {
+    const state = { ...base, sort: 'weight-asc', types: ['compaction'] }
+    expect(resetFilters(state, bounds).sort).toBe('weight-asc')
+  })
+})
+
+describe('conflictHints', () => {
+  it('на непустом результате молчит', () => {
+    expect(conflictHints(fixtures, base, bounds)).toEqual([])
+  })
+
+  it('называет условия, снятие которых вернёт результат', () => {
+    const state = { ...base, types: ['height'], powers: ['petrol'] }
+    const keys = conflictHints(fixtures, state, bounds).map((h) => h.key)
+    expect(keys).toContain('types')
+    expect(keys).toContain('powers')
+  })
+
+  it('называет диапазон цены, когда виноват он', () => {
+    const state = { ...base, price: [1100, 1200] }
+    const keys = conflictHints(fixtures, state, bounds).map((h) => h.key)
+    expect(keys).toEqual(['price'])
+  })
+
+  it('называет доставку, когда виновата она', () => {
+    const state = { ...base, types: ['compaction'], powers: ['mains'], deliveryOnly: true }
+    const keys = conflictHints(fixtures, state, bounds).map((h) => h.key)
+    expect(keys).toContain('deliveryOnly')
+  })
+})
