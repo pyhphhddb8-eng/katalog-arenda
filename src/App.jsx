@@ -10,6 +10,7 @@ import {
   resetFilters,
 } from './lib/filter.js'
 import FilterPanel from './components/FilterPanel.jsx'
+import FilterDrawer from './components/FilterDrawer.jsx'
 import ToolGrid from './components/ToolGrid.jsx'
 import TermSwitch from './components/TermSwitch.jsx'
 import SortSelect from './components/SortSelect.jsx'
@@ -35,7 +36,11 @@ export default function App() {
       </div>
 
       <div className="mt-8 lg:grid lg:grid-cols-[17rem_1fr] lg:gap-8">
-        <aside className="mb-8 rounded-xl border border-line bg-surface p-5 lg:mb-0 lg:self-start">
+        <div className="mb-6 lg:hidden">
+          <FilterDrawer state={state} counts={counts} bounds={bounds} onChange={setState} />
+        </div>
+
+        <aside className="hidden rounded-xl border border-line bg-surface p-5 lg:block lg:self-start">
           <FilterPanel state={state} counts={counts} bounds={bounds} onChange={setState} />
         </aside>
         <ToolGrid
