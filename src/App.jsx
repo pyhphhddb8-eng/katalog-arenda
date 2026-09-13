@@ -13,11 +13,13 @@ import FilterPanel from './components/FilterPanel.jsx'
 import ToolGrid from './components/ToolGrid.jsx'
 import TermSwitch from './components/TermSwitch.jsx'
 import SortSelect from './components/SortSelect.jsx'
+import ToolDialog from './components/ToolDialog.jsx'
 
 export default function App() {
   const bounds = useMemo(() => priceBounds(TOOLS), [])
   const [state, setState] = useState(() => emptyState(bounds))
   const [term, setTerm] = useState(DEFAULT_TERM_ID)
+  const [openTool, setOpenTool] = useState(null)
 
   const shown = useMemo(() => selectTools(TOOLS, state), [state])
   const counts = useMemo(() => optionCounts(TOOLS, state), [state])
@@ -41,10 +43,12 @@ export default function App() {
           total={TOOLS.length}
           term={term}
           hints={hints}
-          onOpen={() => {}}
+          onOpen={setOpenTool}
           onReset={() => setState(resetFilters(state, bounds))}
         />
       </div>
+
+      <ToolDialog tool={openTool} term={term} onClose={() => setOpenTool(null)} />
     </main>
   )
 }
