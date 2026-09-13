@@ -1,7 +1,14 @@
 import { useMemo, useState } from 'react'
 import { TOOLS } from './data/tools.js'
 import { DEFAULT_TERM_ID } from './data/rentTerms.js'
-import { priceBounds, emptyState, selectTools, optionCounts } from './lib/filter.js'
+import {
+  priceBounds,
+  emptyState,
+  selectTools,
+  optionCounts,
+  conflictHints,
+  resetFilters,
+} from './lib/filter.js'
 import FilterPanel from './components/FilterPanel.jsx'
 import ToolGrid from './components/ToolGrid.jsx'
 import TermSwitch from './components/TermSwitch.jsx'
@@ -14,6 +21,7 @@ export default function App() {
 
   const shown = useMemo(() => selectTools(TOOLS, state), [state])
   const counts = useMemo(() => optionCounts(TOOLS, state), [state])
+  const hints = useMemo(() => conflictHints(TOOLS, state, bounds), [state, bounds])
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-10">
@@ -28,7 +36,14 @@ export default function App() {
         <aside className="mb-8 rounded-xl border border-line bg-surface p-5 lg:mb-0 lg:self-start">
           <FilterPanel state={state} counts={counts} bounds={bounds} onChange={setState} />
         </aside>
-        <ToolGrid tools={shown} total={TOOLS.length} term={term} onOpen={() => {}} />
+        <ToolGrid
+          tools={shown}
+          total={TOOLS.length}
+          term={term}
+          hints={hints}
+          onOpen={() => {}}
+          onReset={() => setState(resetFilters(state, bounds))}
+        />
       </div>
     </main>
   )
