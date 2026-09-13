@@ -309,3 +309,12 @@ export const TOOLS = [
     bringYourOwn: ['Розетка для зарядки', 'Очки и респиратор'],
   },
 ]
+
+export function typeLabel(id) {
+  return TYPES.find((t) => t.id === id)?.label ?? ''
+}
+
+export function powerLabel(id) {
+  if (id === 'none') return 'Питание не нужно'
+  return POWER_SOURCES.find((p) => p.id === id)?.label ?? ''
+}
