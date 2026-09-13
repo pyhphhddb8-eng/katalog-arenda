@@ -55,7 +55,19 @@ export default function App() {
 
   return (
     <main className="mx-auto max-w-7xl px-4 py-10">
-      <h1 className="text-3xl font-semibold">Аренда строительного инструмента</h1>
+      <header className="max-w-2xl">
+        <h1 className="text-3xl font-semibold sm:text-4xl">
+          Аренда строительного инструмента
+        </h1>
+        <p className="mt-3 text-base text-muted">
+          Подбор по типу, питанию, весу и цене. Срок аренды пересчитывает стоимость
+          всего каталога сразу.
+        </p>
+        <p className="mt-4 rounded-lg border border-line bg-accent-soft px-4 py-3 text-sm text-ink">
+          Демонстрационный модуль. Позиции, цены и залоги условные — это не прайс
+          настоящей компании и не предложение заключить договор.
+        </p>
+      </header>
 
       <div className="mt-6 flex flex-wrap items-end justify-between gap-4">
         <TermSwitch value={term} onChange={setTerm} />
@@ -81,6 +93,16 @@ export default function App() {
       </div>
 
       <ToolDialog tool={openTool} term={term} onClose={() => setOpenTool(null)} />
+
+      <footer className="mt-16 border-t border-line pt-6 text-sm text-muted">
+        <p>
+          Работа для портфолио: каталог с подбором по параметрам. React, Vite,
+          Tailwind. Отбор и расчёт цены — отдельные функции, покрытые тестами.
+        </p>
+        <p className="mt-2">
+          Заявок здесь нет и персональные данные не собираются.
+        </p>
+      </footer>
     </main>
   )
 }
