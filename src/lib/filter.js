@@ -1,0 +1,85 @@
+import { TYPES, POWER_SOURCES, WEIGHT_BANDS } from '../data/tools.js'
+
+// Группа чекбоксов знает три вещи: где её отметки лежат в состоянии,
+// как она называется на экране и как проверить одну позицию по одной отметке.
+export const GROUPS = [
+  {
+    key: 'types',
+    label: 'Тип',
+    options: TYPES,
+    matches: (tool, id) => tool.type === id,
+  },
+  {
+    key: 'powers',
+    label: 'Питание',
+    options: POWER_SOURCES,
+    matches: (tool, id) => tool.power === id,
+  },
+  {
+    key: 'weights',
+    label: 'Вес',
+    options: WEIGHT_BANDS,
+    matches: (tool, id) => {
+      const band = WEIGHT_BANDS.find((b) => b.id === id)
+      return band ? band.test(tool.weight) : false
+    },
+  },
+]
+
+const byName = (a, b) => a.name.localeCompare(b.name, 'ru')
+
+export const SORTS = [
+  { id: 'price-asc', label: 'Сначала дешевле', compare: (a, b) => a.pricePerDay - b.pricePerDay },
+  { id: 'price-desc', label: 'Сначала дороже', compare: (a, b) => b.pricePerDay - a.pricePerDay },
+  { id: 'weight-asc', label: 'Сначала легче', compare: (a, b) => a.weight - b.weight },
+]
+
+export const DEFAULT_SORT_ID = 'price-asc'
+
+export function priceBounds(tools) {
+  const prices = tools.map((t) => t.pricePerDay)
+  return { min: Math.min(...prices), max: Math.max(...prices) }
+}
+
+export function emptyState(bounds) {
+  return {
+    types: [],
+    powers: [],
+    weights: [],
+    price: [bounds.min, bounds.max],
+    deliveryOnly: false,
+    sort: DEFAULT_SORT_ID,
+  }
+}
+
+function matchesGroup(tool, group, selected) {
+  // Пустая группа ничего не требует. Непустая — «или» по своим отметкам.
+  if (selected.length === 0) return true
+  return selected.some((id) => group.matches(tool, id))
+}
+
+export function matchesTool(tool, state) {
+  for (const group of GROUPS) {
+    if (!matchesGroup(tool, group, state[group.key] ?? [])) return false
+  }
+  if (state.deliveryOnly && !tool.delivery) return false
+  const [min, max] = state.price
+  // Границы включаются: позиция ровно по цене отсечки в отбор попадает.
+  if (tool.pricePerDay < min || tool.pricePerDay > max) return false
+  return true
+}
+
+export function selectTools(tools, state) {
+  const sort = SORTS.find((s) => s.id === state.sort) ?? SORTS[0]
+  return tools
+    .filter((tool) => matchesTool(tool, state))
+    .sort((a, b) => sort.compare(a, b) || byName(a, b))
+}
+
+export function toggleOption(state, groupKey, optionId) {
+  const current = state[groupKey] ?? []
+  const next = current.includes(optionId)
+    ? current.filter((id) => id !== optionId)
+    : [...current, optionId]
+  return { ...state, [groupKey]: next }
+}
