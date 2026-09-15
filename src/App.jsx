@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import { TOOLS } from './data/tools.js'
 import { DEFAULT_TERM_ID } from './data/rentTerms.js'
 import {
@@ -13,8 +13,11 @@ import FilterDrawer from './components/FilterDrawer.jsx'
 import ToolGrid from './components/ToolGrid.jsx'
 import TermSwitch from './components/TermSwitch.jsx'
 import SortSelect from './components/SortSelect.jsx'
-import ToolDialog from './components/ToolDialog.jsx'
 import { stateToSearch, searchToState } from './lib/urlState.js'
+
+// Карточку раскрывают не все и не сразу, поэтому окно подробностей
+// уезжает в отдельный кусок и качается при первом открытии.
+const ToolDialog = lazy(() => import('./components/ToolDialog.jsx'))
 
 export default function App() {
   const bounds = useMemo(() => priceBounds(TOOLS), [])
@@ -92,7 +95,11 @@ export default function App() {
         />
       </div>
 
-      <ToolDialog tool={openTool} term={term} onClose={() => setOpenTool(null)} />
+      {openTool && (
+        <Suspense fallback={null}>
+          <ToolDialog tool={openTool} term={term} onClose={() => setOpenTool(null)} />
+        </Suspense>
+      )}
 
       <footer className="mt-16 border-t border-line pt-6 text-sm text-muted">
         <p>
