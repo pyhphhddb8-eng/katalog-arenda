@@ -1,13 +1,21 @@
 @import "tailwindcss";
+/* bez-shablona-ok: Ш3 — шрифт задан через @theme (--font-sans: Sofia Sans), в браузере проверено */
 
+/* Цвета площадки проката: бетонный пол, бумажный лист отбора на тёмном
+   планшете, сигнальный красный, как на кожухах и ограждениях. */
 @theme {
-  --color-ink: #16181d;
-  --color-muted: #5b6270;
-  --color-line: #e3e6ec;
-  --color-surface: #ffffff;
-  --color-canvas: #f6f7f9;
-  --color-accent: #a34a08;
-  --color-accent-soft: #fdf1e6;
+  --font-sans: "Sofia Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Sofia Sans Extra Condensed", "Sofia Sans", ui-sans-serif, sans-serif;
+
+  --color-ink: #1d1c1a;
+  --color-muted: #55524c;
+  --color-line: #d3cec4;
+  --color-surface: #fbfaf7;
+  --color-canvas: #e2dfd8;
+  --color-board: #3b3a37;
+  --color-clip: #9aa0a6;
+  --color-accent: #b80f2a;
+  --color-accent-soft: #fbe7ea;
 }
 
 html {
@@ -15,6 +23,10 @@ html {
 }
 
 body {
-  background: var(--color-canvas);
+  background-color: var(--color-canvas);
+  /* мелкий крап бетона */
+  background-image: radial-gradient(rgb(0 0 0 / 0.05) 1px, transparent 1.3px);
+  background-size: 11px 11px;
   color: var(--color-ink);
+  font-family: var(--font-sans);
 }

@@ -1,29 +1,210 @@
-<meta charset="utf-8">
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{width:1200px;height:630px;overflow:hidden;background:#14100C;color:#fff;position:relative;
- font-family:-apple-system,"Helvetica Neue",Arial,sans-serif}
-.glow{position:absolute;width:820px;height:820px;right:-300px;top:-320px;border-radius:50%;
- background:radial-gradient(circle,rgba(196,96,18,.30) 0%,rgba(20,16,12,0) 62%)}
-.pad{position:absolute;inset:0;padding:64px 70px;z-index:2;display:flex;flex-direction:column}
-.kick{font-size:17px;letter-spacing:.2em;text-transform:uppercase;color:#A0897A;font-weight:700}
-h1{margin-top:20px;font-size:66px;line-height:1.03;letter-spacing:-.025em;font-weight:800;max-width:900px}
-.sub{margin-top:20px;font-size:23px;color:#C9B5A5;font-weight:500;max-width:820px;line-height:1.4}
-.panel{margin-top:auto;display:flex;gap:54px;background:rgba(255,255,255,.05);
- border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:26px 32px}
-.panel>div{flex:1}
-.big{font-size:44px;font-weight:800;letter-spacing:-.03em;color:#FFB13D;line-height:1;white-space:nowrap}
-.unit{font-size:16px;color:#B0998A;font-weight:600;line-height:1.35;margin-top:10px}
-.unit b{display:block;color:#fff;font-size:17.5px}
-</style>
-<div class="glow"></div>
-<div class="pad">
-  <div class="kick">Модуль для сайта · аренда инструмента</div>
-  <h1>Каталог с подбором<br>по параметрам</h1>
-  <div class="sub">Тип, питание, вес и цена вместе сужают список. Срок аренды пересчитывает цены всего каталога сразу.</div>
-  <div class="panel">
-    <div><div class="big">24 позиции</div><div class="unit"><b>пять типов инструмента</b>счётчик у каждой отметки</div></div>
-    <div><div class="big">4 регулятора</div><div class="unit"><b>влияют на список вместе</b>тип, питание, вес, цена</div></div>
-    <div><div class="big">100 тестов</div><div class="unit"><b>отбор и расчёт цены</b>проверено без браузера</div></div>
-  </div>
-</div>
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Превью ссылки 1200×630 (600×315 при масштабе 2), по мотивам обложки
+         портфолио: бетонный фон, лист отбора на планшете.
+         Снимок: tools/portfolio/og.sh -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sofia+Sans+Extra+Condensed:wght@800&family=Sofia+Sans:wght@400;600;700&display=block"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --beton: #c9c6bf;
+        --beton-temnee: #b9b5ad;
+        --tekst: #1d1c1a;
+        --tihij: #5d5a54;
+        --signal: #c8102e;
+        --list: #fbfaf7;
+        --planshet: #3b3a37;
+        --zazhim: #9aa0a6;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 600px;
+        height: 315px;
+        overflow: hidden;
+      }
+      body {
+        background-color: var(--beton);
+        background-image:
+          radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1.2px),
+          radial-gradient(rgba(255, 255, 255, 0.18) 1px, transparent 1.2px);
+        background-size:
+          7px 7px,
+          11px 11px;
+        background-position:
+          0 0,
+          3px 5px;
+        color: var(--tekst);
+        font-family: "Sofia Sans", sans-serif;
+        position: relative;
+      }
+      h1 {
+        position: absolute;
+        left: 36px;
+        top: 30px;
+        margin: 0;
+        width: 300px;
+        font:
+          800 40px/0.95 "Sofia Sans Extra Condensed",
+          sans-serif;
+        letter-spacing: -0.005em;
+      }
+      .opisanie {
+        position: absolute;
+        left: 36px;
+        top: 196px;
+        margin: 0;
+        width: 270px;
+        font-size: 14.5px;
+        line-height: 1.45;
+      }
+      .opisanie b {
+        font-weight: 700;
+      }
+      .demo {
+        position: absolute;
+        left: 36px;
+        bottom: 30px;
+        margin: 0;
+        width: 210px;
+        font-size: 12px;
+        line-height: 1.4;
+        color: var(--tihij);
+      }
+
+      .planshet {
+        position: absolute;
+        left: 330px;
+        top: 26px;
+        width: 240px;
+        height: 300px;
+        background: var(--planshet);
+        border-radius: 14px 14px 0 0;
+        padding: 26px 12px 0;
+        box-sizing: border-box;
+        box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.55);
+      }
+      .zazhim {
+        position: absolute;
+        left: 50%;
+        top: -10px;
+        transform: translateX(-50%);
+        width: 120px;
+        height: 34px;
+        border-radius: 8px;
+        background: linear-gradient(#b7bcc1, var(--zazhim));
+        box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.18);
+      }
+      .list {
+        background: var(--list);
+        height: 100%;
+        padding: 16px 16px;
+        box-sizing: border-box;
+      }
+      .list h2 {
+        margin: 0 0 12px;
+        font:
+          800 26px/1 "Sofia Sans Extra Condensed",
+          sans-serif;
+      }
+      .gruppa {
+        margin: 0 0 10px;
+      }
+      .gruppa h3 {
+        margin: 0 0 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--tihij);
+      }
+      .punkt {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 0;
+        font-size: 14px;
+        border-bottom: 1px solid #ebe8e1;
+      }
+      .kvadrat {
+        flex: none;
+        width: 17px;
+        height: 17px;
+        border: 2px solid #8e8a82;
+        border-radius: 3px;
+        box-sizing: border-box;
+        position: relative;
+      }
+      .vybran .kvadrat {
+        border-color: var(--signal);
+        background: var(--signal);
+      }
+      .vybran .kvadrat::after {
+        content: "";
+        position: absolute;
+        left: 4px;
+        top: 0;
+        width: 5px;
+        height: 9px;
+        border: solid #fff;
+        border-width: 0 2.5px 2.5px 0;
+        transform: rotate(45deg);
+      }
+      .vybran {
+        font-weight: 600;
+      }
+      .punkt .schet {
+        margin-left: auto;
+        font-weight: 600;
+        color: var(--tihij);
+        font-variant-numeric: tabular-nums;
+      }
+      .vybran .schet {
+        color: var(--signal);
+      }
+      .itog {
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 2px solid var(--tekst);
+      }
+      .itog p {
+        margin: 0;
+        font:
+          800 34px/1 "Sofia Sans Extra Condensed",
+          sans-serif;
+        color: var(--signal);
+      }
+      .itog span {
+        display: block;
+        margin-top: 4px;
+        font-size: 12.5px;
+        color: var(--tihij);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Аренда инструмента с&nbsp;подбором по&nbsp;параметрам</h1>
+    <p class="opisanie">
+      У&nbsp;каждой отметки <b>свой счётчик</b>: видно, сколько позиций
+      останется, до&nbsp;того как нажмёшь. Срок аренды пересчитывает все цены.
+    </p>
+    <div class="planshet" aria-label="Лист отбора">
+      <span class="zazhim" aria-hidden="true"></span>
+      <div class="list">
+        <h2>Подбор</h2>
+        <div class="gruppa">
+          <h3>Тип</h3>
+          <div class="punkt vybran"><span class="kvadrat"></span>Уплотнение грунта<span class="schet">5</span></div>
+          <div class="punkt"><span class="kvadrat"></span>Бетон<span class="schet">5</span></div>
+        </div>
+        <div class="gruppa">
+          <h3>Питание</h3>
+          <div class="punkt vybran"><span class="kvadrat"></span>Бензин<span class="schet">4</span></div>
+        </div>
+        <div class="itog"><p>Подошли 4&nbsp;из&nbsp;24</p></div>
+      </div>
+    </div>
+  </body>
+</html>

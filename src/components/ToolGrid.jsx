@@ -9,8 +9,8 @@ export default function ToolGrid({ tools, total, term, hints, onOpen, onReset })
           экране панель «Подбор» со своим h2 скрыта. Без него после h1 сразу
           шёл бы h3, и программа чтения с экрана теряла бы структуру. */}
       <div className="mb-4 flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <h2 className="text-lg font-semibold">Каталог</h2>
-        <p aria-live="polite" className="text-sm font-medium text-muted">
+        <h2 className="sr-only">Каталог</h2>
+        <p aria-live="polite" className="font-display text-4xl font-extrabold leading-none text-accent">
           {formatMatches(tools.length, total)}
         </p>
       </div>

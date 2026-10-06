@@ -4,7 +4,7 @@ export default function TermSwitch({ value, onChange }) {
   return (
     <fieldset>
       <legend className="mb-2 text-sm font-medium text-muted">Срок аренды</legend>
-      <div className="inline-flex rounded-lg border border-line bg-surface p-1">
+      <div className="inline-flex rounded-sm border border-line bg-surface p-1">
         {RENT_TERMS.map((term) => (
           <label
             key={term.id}

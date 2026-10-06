@@ -10,7 +10,7 @@ export default function CheckboxGroup({ group, selected, counts, onToggle }) {
           return (
             <label
               key={option.id}
-              className={`flex cursor-pointer items-center gap-2.5 rounded-md px-2 py-1.5 text-sm has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent ${
+              className={`flex cursor-pointer items-center gap-2.5 rounded-sm px-2 py-1.5 text-base has-[:focus-visible]:outline-2 has-[:focus-visible]:outline-offset-2 has-[:focus-visible]:outline-accent ${
                 dead ? 'text-muted' : 'hover:bg-canvas'
               }`}
             >
@@ -21,7 +21,7 @@ export default function CheckboxGroup({ group, selected, counts, onToggle }) {
                 className="h-4 w-4 shrink-0 accent-accent"
               />
               <span className="flex-1">{option.label}</span>
-              <span className={`text-xs tabular-nums ${dead ? 'text-muted' : 'text-accent'}`}>
+              <span className={`text-sm font-semibold tabular-nums ${dead ? 'text-muted' : 'text-accent'}`}>
                 {count}
               </span>
             </label>
