@@ -44,12 +44,12 @@ export default function ToolDialog({ tool, term, onClose }) {
       onClose={onClose}
       onKeyDown={onKeyDown}
       onClick={onBackdropClick}
-      className="m-auto w-[min(34rem,calc(100vw-2rem))] rounded-xl border border-line bg-surface p-0 text-ink backdrop:bg-black/40"
+      className="m-auto w-[min(34rem,calc(100vw-2rem))] rounded-sm border border-line bg-surface p-0 text-ink backdrop:bg-black/40"
     >
       {tool && (
         <div className="p-6">
           <div className="flex items-start justify-between gap-4">
-            <h2 className="text-xl font-semibold leading-snug">{tool.name}</h2>
+            <h2 className="font-display text-3xl font-extrabold leading-tight">{tool.name}</h2>
             <button
               type="button"
               onClick={onClose}

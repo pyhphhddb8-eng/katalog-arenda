@@ -28,7 +28,7 @@ export default function FilterDrawer({ state, counts, bounds, onChange }) {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="w-full rounded-lg border border-line bg-surface px-4 py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-auto"
+        className="w-full rounded-sm border border-line bg-surface px-4 py-3 text-sm font-medium focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent sm:w-auto"
       >
         Фильтры{active > 0 && <> · {active}</>}
       </button>
@@ -42,7 +42,7 @@ export default function FilterDrawer({ state, counts, bounds, onChange }) {
         onClick={(event) => {
           if (event.target === ref.current) setOpen(false)
         }}
-        className="m-0 mt-auto max-h-[85dvh] w-full max-w-none rounded-t-2xl border border-line bg-surface p-0 text-ink backdrop:bg-black/40 md:m-auto md:max-h-[85dvh] md:w-[22rem] md:rounded-2xl"
+        className="m-0 mt-auto max-h-[85dvh] w-full max-w-none rounded-t-sm border border-line bg-surface p-0 text-ink backdrop:bg-black/40 md:m-auto md:max-h-[85dvh] md:w-[22rem] md:rounded-sm"
       >
         <div className="sticky top-0 flex items-center justify-between border-b border-line bg-surface px-5 py-4">
           <span className="text-base font-semibold">Фильтры</span>
@@ -64,7 +64,7 @@ export default function FilterDrawer({ state, counts, bounds, onChange }) {
           <button
             type="button"
             onClick={() => setOpen(false)}
-            className="w-full rounded-lg bg-accent px-5 py-3 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            className="w-full rounded-sm bg-accent px-5 py-3 text-sm font-medium text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
           >
             Показать результат
           </button>

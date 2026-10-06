@@ -37,7 +37,7 @@ export default function ToolGlyph({ type }) {
     <svg
       viewBox="0 0 64 64"
       aria-hidden="true"
-      className="h-16 w-16 stroke-accent"
+      className="h-14 w-14 stroke-ink"
       fill="none"
       strokeWidth="2.5"
       strokeLinecap="round"

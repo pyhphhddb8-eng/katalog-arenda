@@ -59,14 +59,14 @@ export default function App() {
   return (
     <main className="mx-auto max-w-7xl px-4 py-10">
       <header className="max-w-2xl">
-        <h1 className="text-3xl font-semibold sm:text-4xl">
+        <h1 className="font-display text-5xl font-extrabold leading-none sm:text-6xl">
           Аренда строительного инструмента
         </h1>
-        <p className="mt-3 text-base text-muted">
+        <p className="mt-4 text-lg text-muted">
           Подбор по типу, питанию, весу и цене. Срок аренды пересчитывает стоимость
           всего каталога сразу.
         </p>
-        <p className="mt-4 rounded-lg border border-line bg-accent-soft px-4 py-3 text-sm text-ink">
+        <p className="mt-3 text-sm text-muted">
           Демонстрационный модуль. Позиции, цены и залоги условные — это не прайс
           настоящей компании и не предложение заключить договор.
         </p>
@@ -82,8 +82,15 @@ export default function App() {
           <FilterDrawer state={state} counts={counts} bounds={bounds} onChange={setState} />
         </div>
 
-        <aside className="hidden rounded-xl border border-line bg-surface p-5 lg:block lg:self-start">
-          <FilterPanel state={state} counts={counts} bounds={bounds} onChange={setState} />
+        {/* Лист отбора, прижатый к планшету, как на складе проката */}
+        <aside className="relative hidden rounded-md bg-board px-3 pb-3 pt-7 shadow-[0_18px_30px_-18px_rgb(0_0_0/0.55)] lg:block lg:self-start">
+          <div
+            aria-hidden="true"
+            className="absolute left-1/2 top-[-0.6rem] h-7 w-28 -translate-x-1/2 rounded-sm border-b-4 border-black/20 bg-clip"
+          />
+          <div className="bg-surface p-5">
+            <FilterPanel state={state} counts={counts} bounds={bounds} onChange={setState} />
+          </div>
         </aside>
         <ToolGrid
           tools={shown}
@@ -103,8 +110,8 @@ export default function App() {
 
       <footer className="mt-16 border-t border-line pt-6 text-sm text-muted">
         <p>
-          Работа для портфолио: каталог с подбором по параметрам. React, Vite,
-          Tailwind. Отбор и расчёт цены — отдельные функции, покрытые тестами.
+          Работа для портфолио: каталог с подбором по параметрам. Подбор и цены
+          считаются прямо в браузере, без ожидания ответа сервера.
         </p>
         <p className="mt-2">
           Заявок здесь нет и персональные данные не собираются.

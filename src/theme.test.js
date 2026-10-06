@@ -1,12 +1,13 @@
 import { describe, it, expect } from 'vitest'
 
 const PALETTE = {
-  ink: '#16181d',
-  muted: '#5b6270',
-  surface: '#ffffff',
-  canvas: '#f6f7f9',
-  accent: '#a34a08',
-  accentSoft: '#fdf1e6',
+  ink: '#1d1c1a',
+  muted: '#55524c',
+  surface: '#fbfaf7',
+  canvas: '#e2dfd8',
+  accent: '#b80f2a',
+  accentSoft: '#fbe7ea',
+  board: '#3b3a37',
   white: '#ffffff',
 }
 
@@ -39,6 +40,7 @@ const PAIRS = [
   ['акцент на фоне страницы', PALETTE.accent, PALETTE.canvas],
   ['акцент на плашке «есть доставка»', PALETTE.accent, PALETTE.accentSoft],
   ['белый текст на кнопке', PALETTE.white, PALETTE.accent],
+  ['светлый текст на планшете', PALETTE.surface, PALETTE.board],
 ]
 
 describe('контраст палитры', () => {

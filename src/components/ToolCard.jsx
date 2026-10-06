@@ -10,17 +10,17 @@ export default function ToolCard({ tool, term, onOpen }) {
   const days = termById(term).days
 
   return (
-    <article className="flex flex-col rounded-xl border border-line bg-surface p-5">
+    <article className="flex flex-col rounded-sm border border-line bg-surface p-5">
       <div className="mb-3 flex items-start justify-between gap-3">
         <ToolGlyph type={tool.type} />
         {tool.delivery && (
-          <span className="rounded-full bg-accent-soft px-2.5 py-1 text-xs font-medium text-accent">
+          <span className="rounded-sm border border-accent px-2 py-0.5 text-xs font-semibold text-accent">
             Есть доставка
           </span>
         )}
       </div>
 
-      <h3 className="text-base font-semibold leading-snug">{tool.name}</h3>
+      <h3 className="text-lg font-bold leading-snug">{tool.name}</h3>
 
       <dl className="mt-3 space-y-1 text-sm text-muted">
         <div className="flex gap-2">
@@ -38,7 +38,7 @@ export default function ToolCard({ tool, term, onOpen }) {
       </dl>
 
       <div className="mt-4 border-t border-line pt-4">
-        <p className="text-2xl font-semibold">{formatPrice(total)}</p>
+        <p className="font-display text-4xl font-extrabold leading-none">{formatPrice(total)}</p>
         <p className="text-sm text-muted">
           за {days === 1 ? 'сутки' : `${days} дн.`}
           {days > 1 && <> · {formatPrice(perDay)} в сутки</>}
@@ -53,7 +53,7 @@ export default function ToolCard({ tool, term, onOpen }) {
       <button
         type="button"
         onClick={() => onOpen(tool)}
-        className="mt-4 rounded-lg border border-line px-4 py-2.5 text-sm font-medium transition hover:border-accent hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        className="mt-4 rounded-sm border-2 border-ink px-4 py-2.5 text-sm font-semibold transition hover:bg-ink hover:text-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
       >
         Условия аренды
       </button>

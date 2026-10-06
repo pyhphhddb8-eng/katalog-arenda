@@ -9,7 +9,7 @@ export default function FilterPanel({ state, counts, bounds, onChange }) {
   return (
     <div className="space-y-5">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-semibold">Подбор</h2>
+        <h2 className="font-display text-3xl font-extrabold leading-none">Подбор</h2>
         {active > 0 && (
           <button
             type="button"
